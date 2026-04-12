@@ -1,59 +1,51 @@
+// app/layout.tsx
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { auth } from '@/auth';  // 👈 Para sesiones globales
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const viewport = {
+  themeColor: '#3B82F6',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
   title: 'Mi App PWA',
-  description: 'Aplicación profesional con sistema de autenticación',
+  description: 'Aplicación PWA con Next.js, Turso y Drizzle',
   manifest: '/manifest.json',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    viewportFit: 'cover',
-  },
-  themeColor: '#3B82F6',
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'black-translucent',
-    title: 'Mi App PWA',
+    statusBarStyle: 'default',
+    title: 'Mi App',
   },
-  formatDetection: {
-    telephone: false,
+  icons: {
+    apple: '/icons/icon-152.png',
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Obtener sesión en el servidor (opcional)
+  const session = await auth();
+
   return (
     <html lang="es">
       <head>
-        {/* Apple Touch Icon */}
-        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
-
-        {/* Windows Tile */}
-        <meta name="msapplication-TileImage" content="/icons/icon-144.png" />
-        <meta name="msapplication-TileColor" content="#3B82F6" />
-
-        {/* Chrome/Firefox theme */}
-        <meta name="theme-color" content="#3B82F6" />
-
-        {/* Mobile Web App */}
+        <link rel="apple-touch-icon" href="/icons/icon-152.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Mi App PWA" />
-
-        {/* Facebook/Twitter */}
-        <meta property="og:title" content="Mi App PWA" />
-        <meta property="og:description" content="Aplicación profesional con sistema de autenticación" />
-        <meta property="og:type" content="website" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+      </body>
     </html>
   );
 }

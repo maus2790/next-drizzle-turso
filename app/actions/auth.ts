@@ -6,6 +6,7 @@ import { eq } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';  // 👈 NUEVO: Para manejar cookies
+import { signIn, signOut, auth } from '@/auth';  // 👈 NUEVO
 
 // Función para generar un ID de sesión simple
 function generateSessionId() {
@@ -52,8 +53,12 @@ export async function handleLogin(formData: FormData) {
         return { error: 'Credenciales inválidas' };
     }
 
-    const isValid = await bcrypt.compare(password, user[0].password);
+    // Verificar que el usuario tiene contraseña (no es de Google)
+    if (!user[0].password) {
+        return { error: 'Esta cuenta usa Google. Inicia sesión con Google.' };
+    }
 
+    const isValid = await bcrypt.compare(password, user[0].password);
     if (!isValid) {
         return { error: 'Credenciales inválidas' };
     }
@@ -99,44 +104,64 @@ export async function handleLogin(formData: FormData) {
 }
 
 // ============================================================
-// 👇 NUEVA FUNCIÓN: Verificar si hay sesión activa
+// NUEVA: Login con Google
 // ============================================================
 
-export async function getCurrentUser() {
-    const cookieStore = await cookies();
-    const sessionId = cookieStore.get('session_id')?.value;
-    const userId = cookieStore.get('user_id')?.value;
-    const userName = cookieStore.get('user_name')?.value;
-
-    if (!sessionId || !userId) {
-        return null;
-    }
-
-    // Opcional: Verificar en DB que la sesión existe
-    const user = await db.select().from(users).where(eq(users.id, parseInt(userId)));
-
-    if (user.length === 0) {
-        return null;
-    }
-
-    return {
-        id: user[0].id,
-        email: user[0].email,
-        name: userName || user[0].name,
-    };
+export async function handleGoogleLogin() {
+    await signIn('google', { redirectTo: '/dashboard' })
 }
 
 // ============================================================
-// 👇 NUEVA FUNCIÓN: Cerrar sesión
+// NUEVA: Obtener usuario actual (unificado)
+// ============================================================
+
+export async function getCurrentUser() {
+    // Primero verificar sesión de NextAuth (Google)
+    const session = await auth()
+
+    if (session?.user?.email) {
+        const user = await db.select().from(users).where(eq(users.email, session.user.email))
+        if (user[0]) {
+            return {
+                id: user[0].id,
+                email: user[0].email,
+                name: user[0].name,
+                provider: user[0].provider || 'email',
+            }
+        }
+    }
+
+    // Si no, verificar cookies manuales (login con email)
+    const cookieStore = await cookies()
+    const userId = cookieStore.get('user_id')?.value
+    const userName = cookieStore.get('user_name')?.value
+
+    if (userId) {
+        const user = await db.select().from(users).where(eq(users.id, parseInt(userId)))
+        if (user[0]) {
+            return {
+                id: user[0].id,
+                email: user[0].email,
+                name: userName || user[0].name,
+                provider: user[0].provider || 'email',
+            }
+        }
+    }
+
+    return null
+}
+
+// ============================================================
+// NUEVA: Cerrar sesión unificado
 // ============================================================
 
 export async function handleLogout() {
-    const cookieStore = await cookies();
+    // Limpiar cookies manuales
+    const cookieStore = await cookies()
+    cookieStore.set('session_id', '', { maxAge: 0, path: '/' })
+    cookieStore.set('user_id', '', { maxAge: 0, path: '/' })
+    cookieStore.set('user_name', '', { maxAge: 0, path: '/' })
 
-    // Eliminar las cookies (poner maxAge = 0)
-    cookieStore.set('session_id', '', { maxAge: 0, path: '/' });
-    cookieStore.set('user_id', '', { maxAge: 0, path: '/' });
-    cookieStore.set('user_name', '', { maxAge: 0, path: '/' });
-
-    redirect('/login');
+    // Cerrar sesión de NextAuth (Google)
+    await signOut({ redirectTo: '/login' })
 }
