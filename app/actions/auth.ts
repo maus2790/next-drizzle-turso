@@ -108,7 +108,9 @@ export async function handleLogin(formData: FormData) {
 // ============================================================
 
 export async function handleGoogleLogin() {
-    await signIn('google', { redirectTo: '/dashboard' })
+    // Redirigir al endpoint que inicia el flujo OAuth manualmente
+    // (evitamos Auth.js que falla por el desfase de reloj del servidor)
+    redirect('/api/auth/google')
 }
 
 // ============================================================
@@ -116,39 +118,21 @@ export async function handleGoogleLogin() {
 // ============================================================
 
 export async function getCurrentUser() {
-    // Primero verificar sesión de NextAuth (Google)
-    const session = await auth()
-
-    if (session?.user?.email) {
-        const user = await db.select().from(users).where(eq(users.email, session.user.email))
-        if (user[0]) {
-            return {
-                id: user[0].id,
-                email: user[0].email,
-                name: user[0].name,
-                provider: user[0].provider || 'email',
-            }
-        }
-    }
-
-    // Si no, verificar cookies manuales (login con email)
     const cookieStore = await cookies()
     const userId = cookieStore.get('user_id')?.value
     const userName = cookieStore.get('user_name')?.value
 
-    if (userId) {
-        const user = await db.select().from(users).where(eq(users.id, parseInt(userId)))
-        if (user[0]) {
-            return {
-                id: user[0].id,
-                email: user[0].email,
-                name: userName || user[0].name,
-                provider: user[0].provider || 'email',
-            }
-        }
-    }
+    if (!userId) return null
 
-    return null
+    const user = await db.select().from(users).where(eq(users.id, parseInt(userId)))
+    if (!user[0]) return null
+
+    return {
+        id: user[0].id,
+        email: user[0].email,
+        name: userName || user[0].name,
+        provider: user[0].provider || 'email',
+    }
 }
 
 // ============================================================

@@ -2,7 +2,7 @@
 
 'use client';
 
-import { handleLogin, handleGoogleLogin } from '@/app/actions/auth';
+import { handleLogin } from '@/app/actions/auth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -26,10 +26,10 @@ export default function LoginPage() {
         }
     };
 
-    const handleGoogle = async () => {
+    const handleGoogle = () => {
         setGoogleLoading(true);
-        await handleGoogleLogin();
-        // La redirección la maneja NextAuth
+        // Navegar directo al endpoint de OAuth — no usar server action aquí
+        window.location.href = '/api/auth/google';
     };
 
     return (
