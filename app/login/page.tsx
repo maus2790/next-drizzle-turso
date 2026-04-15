@@ -33,43 +33,43 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-            <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+        <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4">
+            <div className="max-w-md w-full glass rounded-3xl shadow-2xl p-8 border border-border/50">
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">Bienvenido</h1>
-                    <p className="text-gray-500 mt-2">Inicia sesión en tu cuenta</p>
+                    <h1 className="text-4xl font-black text-foreground tracking-tight">Bienvenido</h1>
+                    <p className="text-muted-foreground mt-2 font-medium">Inicia sesión en tu cuenta</p>
                 </div>
 
                 {error && (
-                    <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl text-sm font-medium animate-in slide-in-from-top-2 duration-300">
                         {error}
                     </div>
                 )}
 
                 {/* Formulario de email/password */}
-                <form action={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                <form action={handleSubmit} className="space-y-5">
+                    <div>
+                        <label className="block text-foreground text-sm font-bold mb-2 ml-1">
                             Email
                         </label>
                         <input
                             type="email"
                             name="email"
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 bg-background/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all placeholder:text-muted-foreground/50"
                             placeholder="usuario@email.com"
                         />
                     </div>
 
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                    <div>
+                        <label className="block text-foreground text-sm font-bold mb-2 ml-1">
                             Contraseña
                         </label>
                         <input
                             type="password"
                             name="password"
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 bg-background/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all placeholder:text-muted-foreground/50"
                             placeholder="••••••••"
                         />
                     </div>
@@ -77,19 +77,19 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 cursor-pointer"
+                        className="w-full bg-accent text-white font-bold py-3 px-4 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer shadow-lg shadow-accent/20"
                     >
                         {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                     </button>
                 </form>
 
                 {/* Separador */}
-                <div className="relative my-6">
+                <div className="relative my-8">
                     <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-300"></div>
+                        <div className="w-full border-t border-border"></div>
                     </div>
-                    <div className="relative flex justify-center text-sm">
-                        <span className="px-2 bg-white text-gray-500">O continúa con</span>
+                    <div className="relative flex justify-center text-xs uppercase tracking-widest font-bold">
+                        <span className="px-4 bg-background text-muted-foreground">O continúa con</span>
                     </div>
                 </div>
 
@@ -97,7 +97,7 @@ export default function LoginPage() {
                 <button
                     onClick={handleGoogle}
                     disabled={googleLoading}
-                    className="w-full bg-white border border-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg hover:bg-gray-50 transition disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full bg-background border border-border text-foreground font-bold py-3 px-4 rounded-xl hover:bg-accent/5 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-3 shadow-md"
                 >
                     <svg className="w-5 h-5" viewBox="0 0 24 24">
                         <path
@@ -117,16 +117,19 @@ export default function LoginPage() {
                             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                         />
                     </svg>
-                    {googleLoading ? 'Redirigiendo a Google...' : 'Continuar con Google'}
+                    <span className="text-sm">
+                        {googleLoading ? 'Redirigiendo...' : 'Continuar con Google'}
+                    </span>
                 </button>
 
-                <p className="text-center text-gray-600 mt-6">
+                <p className="text-center text-muted-foreground mt-8 text-sm font-medium">
                     ¿No tienes cuenta?{' '}
-                    <a href="/register" className="text-blue-600 hover:underline">
+                    <a href="/register" className="text-accent hover:underline font-bold transition-all">
                         Regístrate aquí
                     </a>
                 </p>
             </div>
         </div>
+
     );
 }

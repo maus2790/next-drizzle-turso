@@ -27,55 +27,55 @@ export default function RegisterPage() {
 
     return (
         // ✅ CORREGIDO: bg-linear-to-br en lugar de bg-gradient-to-br
-        <div className="min-h-screen bg-linear-to-br from-green-50 to-emerald-100 flex items-center justify-center p-4">
-            <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+        <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4">
+            <div className="max-w-md w-full glass rounded-3xl shadow-2xl p-8 border border-border/50">
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">Crear Cuenta</h1>
-                    <p className="text-gray-500 mt-2">Regístrate para comenzar</p>
+                    <h1 className="text-4xl font-black text-foreground tracking-tight">Crear Cuenta</h1>
+                    <p className="text-muted-foreground mt-2 font-medium">Regístrate para comenzar</p>
                 </div>
 
                 {error && (
-                    <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl text-sm font-medium animate-in slide-in-from-top-2 duration-300">
                         {error}
                     </div>
                 )}
 
-                <form action={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                <form action={handleSubmit} className="space-y-5">
+                    <div>
+                        <label className="block text-foreground text-sm font-bold mb-2 ml-1">
                             Nombre completo
                         </label>
                         <input
                             type="text"
                             name="name"
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                            className="w-full px-4 py-3 bg-background/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all placeholder:text-muted-foreground/50"
                             placeholder="Juan Pérez"
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                    <div>
+                        <label className="block text-foreground text-sm font-bold mb-2 ml-1">
                             Email
                         </label>
                         <input
                             type="email"
                             name="email"
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                            className="w-full px-4 py-3 bg-background/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all placeholder:text-muted-foreground/50"
                             placeholder="usuario@email.com"
                         />
                     </div>
 
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                    <div>
+                        <label className="block text-foreground text-sm font-bold mb-2 ml-1">
                             Contraseña
                         </label>
                         <input
                             type="password"
                             name="password"
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                            className="w-full px-4 py-3 bg-background/50 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all placeholder:text-muted-foreground/50"
                             placeholder="••••••••"
                         />
                     </div>
@@ -83,15 +83,15 @@ export default function RegisterPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition disabled:opacity-50 cursor-pointer"
+                        className="w-full bg-accent text-white font-bold py-3 px-4 rounded-xl hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer shadow-lg shadow-accent/20"
                     >
                         {loading ? 'Creando cuenta...' : 'Registrarse'}
                     </button>
                 </form>
 
-                <p className="text-center text-gray-600 mt-6">
+                <p className="text-center text-muted-foreground mt-8 text-sm font-medium">
                     ¿Ya tienes cuenta?{' '}
-                    <a href="/login" className="text-green-600 hover:underline">
+                    <a href="/login" className="text-accent hover:underline font-bold transition-all">
                         Inicia sesión aquí
                     </a>
                 </p>

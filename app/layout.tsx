@@ -3,7 +3,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { auth } from '@/auth';  // 👈 Para sesiones globales
+import { auth } from '@/auth';
+import { ThemeProvider } from '@/app/components/ThemeProvider';
+import { Header } from '@/app/components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -37,14 +39,19 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/icons/icon-152.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
       <body className={inter.className}>
-        {children}
+        <ThemeProvider>
+          <Header session={session} />
+          <main>
+            {children}
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   );
