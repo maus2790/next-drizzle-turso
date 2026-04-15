@@ -45,13 +45,13 @@ body {
 
 /* Glassmorphism */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(226, 232, 240, 0.3);
 }
 
 .dark .glass {
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(15, 23, 42, 0.9);
   border: 1px solid rgba(51, 65, 85, 0.3);
 }

@@ -2,16 +2,16 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useTheme } from 'next-themes';
-import { 
-  User, 
-  Settings, 
-  LayoutDashboard, 
-  Sun, 
-  Moon, 
-  Maximize, 
-  Minimize, 
-  LogOut, 
-  UserCircle 
+import {
+  User,
+  Settings,
+  LayoutDashboard,
+  Sun,
+  Moon,
+  Maximize,
+  Minimize,
+  LogOut,
+  UserCircle
 } from 'lucide-react';
 import { handleLogout } from '@/app/actions/auth';
 import Link from 'next/link';
@@ -74,19 +74,22 @@ export function UserMenu({ user }: UserMenuProps) {
         <div className="absolute right-0 mt-3 w-72 glass shadow-xl rounded-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-4 duration-200">
           <div className="p-4 border-b border-border">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center text-accent-foreground text-xl font-bold">
-                {user.name.charAt(0).toUpperCase()}
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-foreground truncate">{user.name}</span>
-                <span className="text-xs text-gray-400 truncate">Estudiante / Usuario</span>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center text-accent-foreground text-xl font-bold shrink-0">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+
+                <div className="flex flex-col min-w-0">
+                  <span className="font-bold text-foreground truncate">{user.name}</span>
+                  <span className="text-xs text-gray-400 truncate">Estudiante / Usuario</span>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="p-2">
-            <Link 
-              href="/profile" 
+            <Link
+              href="/profile"
               className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-colors text-foreground"
               onClick={() => setIsOpen(false)}
             >
@@ -97,8 +100,8 @@ export function UserMenu({ user }: UserMenuProps) {
               </div>
             </Link>
 
-            <Link 
-              href="/dashboard" 
+            <Link
+              href="/dashboard"
               className="flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-colors text-foreground"
               onClick={() => setIsOpen(false)}
             >
@@ -112,7 +115,7 @@ export function UserMenu({ user }: UserMenuProps) {
             <div className="h-px bg-border my-2 mx-2" />
 
             {/* Theme Toggle */}
-            <button 
+            <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-colors text-foreground"
             >
@@ -128,7 +131,7 @@ export function UserMenu({ user }: UserMenuProps) {
             </button>
 
             {/* Fullscreen */}
-            <button 
+            <button
               onClick={toggleFullscreen}
               className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-muted transition-colors text-foreground"
             >
@@ -145,7 +148,7 @@ export function UserMenu({ user }: UserMenuProps) {
 
             <div className="h-px bg-border my-2 mx-2" />
 
-            <button 
+            <button
               onClick={handleLogoutClick}
               className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 transition-colors group"
             >
