@@ -46,7 +46,8 @@ export async function GET(request: NextRequest) {
     try {
         const clientId = process.env.AUTH_GOOGLE_ID!;
         const clientSecret = process.env.AUTH_GOOGLE_SECRET!;
-        const redirectUri = `${process.env.AUTH_URL}/api/auth/google/callback`;
+        const { origin } = new URL(request.url);
+        const redirectUri = `${origin}/api/auth/google/callback`;
 
         // ==============================================================
         // PASO 1: Intercambiar el código por un access_token

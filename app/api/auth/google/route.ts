@@ -2,12 +2,13 @@
 // Este endpoint inicia el flujo OAuth de Google manualmente,
 // sin depender de Auth.js (que falla por el reloj del servidor).
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+    const { origin } = new URL(request.url);
     const clientId = process.env.AUTH_GOOGLE_ID!;
-    const redirectUri = `${process.env.AUTH_URL}/api/auth/google/callback`;
+    const redirectUri = `${origin}/api/auth/google/callback`;
 
     // Generar un 'state' aleatorio para prevenir ataques CSRF
     const state = Math.random().toString(36).substring(2, 15);
